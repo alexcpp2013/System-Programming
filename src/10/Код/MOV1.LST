@@ -1,0 +1,79 @@
+Turbo Assembler	 Version 3.2	    02/04/07 19:31:20	    Page 1
+mov1.asm
+
+
+
+      1				       IDEAL
+      2	0000			       MODEL small
+      3	0000			       STACK 256
+      4	      =0210		       value =	     528
+      5	0100			       DATASEG
+      6	0000  00		       exCode	     DB	     0
+      7	0001  01 02 04		       b_x   DB	     1,2,4
+      8	0004  0008 0010	0020 0040      w_x   DW	     8,16,32,64
+      9	000C			       Label b_var   byte
+     10	000C  1234		       w_var DW	     1234h
+     11	000E			       CODESEG
+     12	0000  B8 0000s		       Start:	     mov ax,@data    ;Установка	в ds адреси
+     13	0003  8E D8			     mov ds,ax	     ;сегмента даних.
+     14				       ;Безпосередня адресац?я.
+     15	0005  B0 00			     mov al,355	     ;255=0FFh-беззнакове число
+**Error** mov1.asm(15) Constant	too large
+     16	0007  B4 FF			     mov ah,-1	     ;[4]    ;-1=0FFh-негативне	число
+     17	0009  B8 007D			     mov ax,value/5+20	     ;[5]    ;Завантаження в ах	константного виразу
+     18	000C  BB 0004r			     mov bx,OFFSET w_x	     ;[6]    ;Адреса зм?нної w_x в bx, bx=0004h
+     19				       ;Рег?строва ? пряма адресац?ї.
+     20	000F  8A D0			     mov dl,al	     ;[7]
+     21	0011  A0 0001r			     mov al,[b_x]	     ;al=b_x[0]=01h.
+     22	0014  8B 16 0004r		     mov dx,[w_x]    ;dx=w_x[0]=0008h.
+     23	0018  8B 36 000Cr		     mov si,[w_var]  ;si=1234h
+     24	001C  A0 000Cr			     mov al,[b_var]  ;al=[Low w_var]=[b_var]=34h
+     25	001F  8A 26 000Dr		     mov ah,[b_var+1]	     ;ah=[High w_var]=[b_var+1]=12h
+     26				       ;Непряма	рег?строва.
+     27	0023  8B 0F			     mov cx,[bx]     ;[13]   ;cx=w_x[0]=0008h.
+     28	0025  C7 07 FFFE		     mov [bx],-2     ;[14]   ;w_x[0]=-2=0FFFEh.
+*Warning* mov1.asm(28) Argument	needs type override
+     29				       ;Базова адресац?я.
+     30	0029  8B			     mov ax,[dx+2]   ;[15]   ;ax=w_x[1]=16=0010h.
+**Error** mov1.asm(30) Illegal indexing	mode
+     31	002A  50 55 8B EC C7 46	02+	     push 01234h
+     32	      1234 5D
+     33	0034  89 37			     mov [bx],[bx+si+w_x]
+**Error** mov1.asm(32) Illegal memory reference
+     34	0036  C7 47 02 0018		     mov [word bx+2],24	     ;[16]   ;w_x[1]=24=0018h.
+     35				       ;?ндексна адресац?я.
+     36	003B  BE 0001			     mov si,1
+     37	003E  8A 84 0001r		     mov al,[si+b_x] ;[18]	     ;al=b_x[1]=2=02h.
+     38				       ;Базово ?ндексна	адресац?я.
+     39	0042  46			     inc si
+     40	0043  BB 0002			     mov bx,2
+     41	0046  8B 80 0004r		     mov ax,[bx+si+w_x]	     ;[21]   ;ax=w_x[2]=32=0020h.
+     42	004A  C7 80 0004r 0080		     mov [word bx+si+w_x],128	     ;[22]   ;w_x[2]=128=0080h.
+     43				       ;Застосування команди lea.
+     44	0050  8D 9C 0004r		     lea bx,[w_x+si]			     ;[23]   ;bx=OFFSET	w_x+si=OFFSET w_x[1]=0006h.
+     45				       ;Команди	push ? pop.
+     46	0054  53			     push bx ;Зберегти bx ? si
+     47	0055  56			     push si ;в	стец?.
+     48	0056  BB 0010			     mov bx,10h	     ;Установити текстов?
+     49	0059  BE 0020			     mov si,20h	     ;значення.
+     50	005C  5E			     pop si  ;В?дновити	з? стека
+     51	005D  5B			     pop bx  ;збережен?	значення.
+     52	005E  B4 4C		       Exit: mov ah,04Ch     ;Функц?я DOS- вих?д з програми.
+     53	0060  A0 0000r			     mov al,[exCode] ;Повернення коду помилки.
+Turbo Assembler	 Version 3.2	    02/04/07 19:31:20	    Page 2
+mov1.asm
+
+
+
+     54	0063  CD 21			     int 21h ;Виклик DOS. Останов
+     55					     END Start	     ;К?нець програми/точка входу.
+Turbo Assembler	 Version 3.2	    02/04/07 19:31:20	    Page 3
+Error Summary
+
+
+
+**Error** mov1.asm(15) Constant	too large
+*Warning* mov1.asm(28) Argument	needs type override
+**Error** mov1.asm(30) Illegal indexing	mode
+**Error** mov1.asm(32) Illegal memory reference
+

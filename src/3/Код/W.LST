@@ -1,0 +1,123 @@
+Turbo Assembler	 Version 3.2	    12/12/06 23:06:21	    Page 1
+w.asm
+
+
+
+      1				     ; файл w.asm
+      2
+      3				     ;мои числа:
+      4				     ;X=(+/-) 1118
+      5				     ;y=(+/-) 1987
+      6				     ;var=18
+      7
+      8				     ;1118   +	     20	     =	     1138
+      9				     ;-1118  +	     20	     =	     -1098
+     10				     ;1118   +	     (-20)   =	     1098
+     11				     ;-1118  +	     (-20)   =	     -1138
+     12				     ;1987   +	     20	     =	     2007
+     13				     ;-1987  +	     20	     =	     -1967
+     14				     ;1987   +	     (-20)   =	     1967
+     15				     ;-1987  +	     (-20)   =	     -2007
+     16
+     17
+     18
+     19
+     20
+     21				     title lab1-2
+     22				     ; ----------------------------------------------------------
+     23				     ; Приклад пограми на мові Асемблера для перевірки внутрішнього представлення даних
+     24				     ;-----------------------------------------------------------
+     25
+     26	0000			     .MODEL tiny ; цю директиву	можна писати і БЕЗ крапки
+     27						     ; Модель для цього	прикладу НЕ МАЄ	ЗНАЧЕННЯ
+     28				     ; можуть бути також ще моделі:
+     29				     ; small   medium	compact	  large	  huge
+     30
+     31	0000			     .DATA ; писати БЕЗ	крапки цю директиву НЕ МОЖНА!!!
+     32
+     33
+     34				     ;========== процесор і8086	===================
+     35				     ; ---------- byte ----------
+     36	0000  14		     i	     db	     20
+     37				     ; ---------- word ---------
+     38	0001  0472		     iw	     dw	     1138
+     39	0003  FBB6			     dw	     -1098
+     40	0005  044A			     dw	     1098
+     41	0007  FB8E			     dw	     -1138
+     42	0009  07D7			     dw	     2007
+     43	000B  F851			     dw	     -1967
+     44	000D  07AF			     dw	     1967
+     45	000F  F829			     dw	     -2007
+     46
+     47				     ; ---------- shortint ------
+     48	0011  EC		     is	     db	     -20
+     49				     ; --------	integer	--------
+     50	0012  0472		     ii	     dw	     1138
+     51	0014  FBB6			     dw	     -1098
+     52	0016  044A			     dw	     1098
+     53	0018  FB8E			     dw	     -1138
+     54	001A  07D7			     dw	     2007
+     55	001C  F851			     dw	     -1967
+     56	001E  07AF			     dw	     1967
+     57	0020  F829			     dw	     -2007
+Turbo Assembler	 Version 3.2	    12/12/06 23:06:21	    Page 2
+w.asm
+lab1-2
+
+
+     58				     ; --------- longint ---------
+     59	0022  00000472		     il	     dd	     1138
+     60	0026  FFFFFBB6			     dd	     -1098
+     61	002A  0000044A			     dd	     1098
+     62	002E  FFFFFB8E			     dd	     -1138
+     63	0032  000007D7			     dd	     2007
+     64	0036  FFFFF851			     dd	     -1967
+     65	003A  000007AF			     dd	     1967
+     66	003E  FFFFF829			     dd	     -2007
+     67
+     68	0042  00000472		     iil     dd	     1138
+     69	0046  FFFFFBB6			     dd	     -1098
+     70	004A  0000044A			     dd	     1098
+     71	004E  FFFFFB8E			     dd	     -1138
+     72	0052  000007D7			     dd	     2007
+     73	0056  FFFFF851			     dd	     -1967
+     74	005A  000007AF			     dd	     1967
+     75	005E  FFFFF829			     dd	     -2007
+     76				     END
+Turbo Assembler	 Version 3.2	    12/12/06 23:06:21	    Page 3
+Symbol Table
+lab1-2
+
+
+
+Symbol Name		Type   Value			   Cref	(defined at #)
+
+??DATE			Text   "12/12/06"
+??FILENAME		Text   "w	"
+??TIME			Text   "23:06:21"
+??VERSION		Number 0314
+@32BIT			Text   0			   #26
+@CODE			Text   DGROUP			   #26
+@CODESIZE		Text   0			   #26
+@CPU			Text   0101H
+@CURSEG			Text   _DATA			   #31
+@DATA			Text   DGROUP			   #26
+@DATASIZE		Text   0			   #26
+@FILENAME		Text   W
+@INTERFACE		Text   00H			   #26
+@MODEL			Text   1			   #26
+@STACK			Text   DGROUP			   #26
+@WORDSIZE		Text   2			   #31
+I			Byte   DGROUP:0000		   #36
+II			Word   DGROUP:0012		   #50
+IIL			Dword  DGROUP:0042		   #68
+IL			Dword  DGROUP:0022		   #59
+IS			Byte   DGROUP:0011		   #48
+IW			Word   DGROUP:0001		   #38
+
+Groups & Segments	Bit Size Align	Combine	Class	   Cref	(defined at #)
+
+DGROUP			Group				   #26	26
+  _DATA			16  0062 Word	Public	DATA	   #26	#31
+  _TEXT			16  0000 Word	Public	CODE	   #26
+

@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <conio.h>
+#include <math.h>
+void main()
+{
+double Start, Step, x;
+clrscr();
+	printf("Введiть номер, з якого почнемо розрахунок: \n");
+	scanf("%lf", &Start);
+	printf("Введiть крок для розрахункiв: \n");
+	scanf("%lf", &Step);
+	printf("\n");
+	for(int i=0; i<10; i++)
+	{	
+		x=Start;
+		printf("%i) x = %f   atan = %lf  sinh = %lf  atan * sinh = %lf \n",i,x,
+		atan(Start), sinh(Start), atan(Start) * sinh(Start));
+		Start+=Step;
+		
+	}
+getch();
+}
+

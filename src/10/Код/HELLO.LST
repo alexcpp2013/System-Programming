@@ -1,0 +1,84 @@
+Turbo Assembler	 Version 3.2	    02/01/07 13:44:45	    Page 1
+hello.asm
+
+
+
+      1				       IDEAL
+      2	0000			       MODEL small
+      3	0000			       STACK 256
+      4	0100			       DATASEG
+      5	0000  00		       ExCode	     DB	     0
+      6	0001  96 A5 20 E7 A0 E1	20+    Promt DB	     'Це час пiсля полудня? (Так/Нi - y/n)$'
+      7	      AF 69 E1 AB EF 20	AF+
+      8	      AE AB E3 A4 AD EF	3F+
+      9	      20 28 92 A0 AA 2F	8D+
+     10	      69 20 2D 20 79 2F	6E+
+     11	      29 24
+     12	0026  0D 0A 84 AE A1 E0	AE+    GoodMorning   DB	     13,10,'Доброго ранку!',13,10,'$'
+     13	      A3 AE 20 E0 A0 AD	AA+
+     14	      E3 21 0D 0A 24
+     15	0039  0D 0A 87 A4 E0 A0	E1+    GoodAfternoon DB	     13,10,'Здрастуйте!',13,10,'$'
+     16	      E2 E3 A9 E2 A5 21	0D+
+     17	      0A 24
+     18	0049				     CODESEG
+     19	0000  B8 0000s		       Start:	     mov ax,@data    ;Установка	в ds адреси сегмента
+     20	0003  8E D8			     mov ds,ax	     ;даних
+     21	0005  BA 0001r			     mov dx,OFFSET Promt     ;Повiдомлення-запит
+     22	0008  B4 09			     mov ah,9	     ;Функцiя DOS виводу повiдомлення
+     23	000A  CD 21			     int 21h ;на екран
+     24	000C  B4 01			     mov ah,1	     ;Функцiя DOS ввода	символа	з
+     25	000E  CD 21			     int 21h ;клав?атури
+     26	0010  3C 79			     cmp al,'y'	     ;y?
+     27	0012  74 04			     jz	IsAfternoon  ;так, час пiсля полудня
+     28	0014  3C 6E			     cmp al,'n'	     ;n?
+     29	0016  74 05			     jz	IsMorning    ;нi, до полудня
+     30	0018  BA 0039r		       IsAfternoon:  mov dx,OFFSET GoodAfternoon     ;Вказiвка на "Здрастуйте"
+     31	001B  EB 03			     jmp SHORT Disp
+     32	001D  BA 0026r		       IsMorning:    mov dx,OFFSET GoodMorning	     ;Вказiвка на "Доброго ранку"
+     33	0020  B4 09		       Disp: mov ah,9	     ;Функцiя DOS виводу повiдомлення на
+     34	0022  CD 21			     int 21h ;екран
+     35	0024  B4 4C		       Exit: mov ah,4ch	     ;Функцiя DOS- вихiд з програми
+     36	0026  A0 0000r			     mov al,[ExCode] ;Повернення коду помилки
+     37	0029  CD 21			     int 21h ;Виклик DOS. Останов програми.
+     38					     END Start	     ;Кiнець програми/точка входу
+Turbo Assembler	 Version 3.2	    02/01/07 13:44:45	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name		Type   Value			   Cref	(defined at #)
+
+??DATE			Text   "02/01/07"
+??FILENAME		Text   "hello	"
+??TIME			Text   "13:44:45"
+??VERSION		Number 0314
+@32BIT			Text   0			   #2
+@CODE			Text   _TEXT			   #2  #2  #18
+@CODESIZE		Text   0			   #2
+@CPU			Text   0101H
+@CURSEG			Text   _TEXT			   #3  #4  #18
+@DATA			Text   DGROUP			   #2  19
+@DATASIZE		Text   0			   #2
+@FILENAME		Text   HELLO
+@INTERFACE		Text   00H			   #2
+@MODEL			Text   2			   #2
+@STACK			Text   DGROUP			   #2
+@WORDSIZE		Text   2			   #3  #4  #18
+DISP			Near   _TEXT:0020		   31  #33
+EXCODE			Byte   DGROUP:0000		   #5  36
+EXIT			Near   _TEXT:0024		   #35
+GOODAFTERNOON		Byte   DGROUP:0039		   #15	30
+GOODMORNING		Byte   DGROUP:0026		   #12	32
+ISAFTERNOON		Near   _TEXT:0018		   27  #30
+ISMORNING		Near   _TEXT:001D		   29  #32
+PROMT			Byte   DGROUP:0001		   #6  21
+START			Near   _TEXT:0000		   #19	38
+
+Groups & Segments	Bit Size Align	Combine	Class	   Cref	(defined at #)
+
+DGROUP			Group				   #2  2  19
+  STACK			16  0100 Para	Stack	STACK	   #3
+  _DATA			16  0049 Word	Public	DATA	   #2  #4
+_TEXT			16  002B Word	Public	CODE	   #2  2  #18  18
+
